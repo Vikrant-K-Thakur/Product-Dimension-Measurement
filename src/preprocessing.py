@@ -2,7 +2,7 @@ import cv2
 import os
 from dotenv import dotenv_values
 
-env = dotenv_values(".env")
+env = dotenv_values("../.env")
 
 def convert_to_grayscale(image_path):
     image = cv2.imread(image_path)
