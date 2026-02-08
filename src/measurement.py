@@ -1,6 +1,3 @@
-import cv2
-import numpy as np
-
 def measure_dimensions(width_pixels, height_pixels, pixels_per_cm):
     if pixels_per_cm <= 0:
         raise ValueError("Invalid pixels_per_cm value")

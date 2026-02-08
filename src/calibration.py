@@ -2,7 +2,7 @@ import cv2
 import os
 from dotenv import dotenv_values
 
-env = dotenv_values("../.env")
+env = dotenv_values(".env")
 
 
 def calibrate(binary_image_path, reference_size_cm):
@@ -17,9 +17,14 @@ def calibrate(binary_image_path, reference_size_cm):
     if not contours:
         raise ValueError("No contours found for calibration")
 
-    contours = sorted(contours, key=cv2.contourArea)
+    # Filter out noise - only keep contours larger than 500 pixels
+    contours = [c for c in contours if cv2.contourArea(c) > 500]
 
-    reference_contour = contours[0]
+    if not contours:
+        raise ValueError("No valid reference contour found")
+
+    # Get smallest valid contour as reference
+    reference_contour = min(contours, key=cv2.contourArea)
 
     x, y, w, h = cv2.boundingRect(reference_contour)
 

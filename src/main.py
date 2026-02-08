@@ -30,6 +30,11 @@ def main():
     capture_image()
 
     product_image = os.path.join(input_dir, "product.jpg")
+    
+    # Safety check: Ensure image was captured
+    if not os.path.exists(product_image):
+        raise FileNotFoundError("Image capture failed.")
+    
     blurred_image = os.path.join(output_dir, "product_blurred.jpg")
     binary_image = os.path.join(output_dir, "binary.jpg")
     cleaned_binary = os.path.join(output_dir, "binary_cleaned.jpg")

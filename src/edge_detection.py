@@ -2,7 +2,7 @@ import cv2
 import os
 from dotenv import dotenv_values
 
-env = dotenv_values("../.env")
+env = dotenv_values(".env")
 
 def detect_edges(
     input_path: str,

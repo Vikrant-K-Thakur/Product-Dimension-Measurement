@@ -2,7 +2,7 @@ import cv2
 import os
 from dotenv import dotenv_values
 
-env = dotenv_values("../.env")
+env = dotenv_values(".env")
 
 def grayscale_to_binary(
     input_path: str,

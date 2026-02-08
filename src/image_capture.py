@@ -3,7 +3,7 @@ import os
 import time
 from dotenv import dotenv_values
 
-env = dotenv_values("../.env")
+env = dotenv_values(".env")
 
 def try_droidcam():
     droidcam_url = env["DROID_CAM_URL"]
@@ -18,8 +18,8 @@ def try_droidcam():
     return None
 
 def capture_image():
-    output_dir = env["OUTPUT_DIR"]
-    os.makedirs(output_dir, exist_ok=True)
+    input_dir = env["INPUT_DIR"]
+    os.makedirs(input_dir, exist_ok=True)
     
     # Try DroidCam first
     print("Trying DroidCam...")
@@ -77,7 +77,7 @@ def capture_image():
             break
         elif key == ord('c') or key == ord('C'):
             filename = "product.jpg"
-            filepath = os.path.join(output_dir, filename)
+            filepath = os.path.join(input_dir, filename)
             success = cv2.imwrite(filepath, frame)
             if success:
                 print(f"📸 Image saved to: {filepath}")
