@@ -12,7 +12,7 @@ from src.comparison import compare_dimensions
 
 def main():
 
-    print("\n🚀 STARTING PRODUCT DIMENSION MEASUREMENT SYSTEM\n")
+    print("\n STARTING PRODUCT DIMENSION MEASUREMENT SYSTEM\n")
 
     env = dotenv_values(".env")
 
@@ -26,7 +26,7 @@ def main():
     os.makedirs(output_dir, exist_ok=True)
 
     # STEP 1 — Capture Image
-    print("📸 Capturing image...")
+    print(" Capturing image...")
     capture_image()
 
     product_image = os.path.join(input_dir, "product.jpg")
@@ -41,7 +41,7 @@ def main():
     contour_output = os.path.join(output_dir, "contour_box.jpg")
 
     # STEP 2 — Preprocessing
-    print("🧠 Preprocessing image...")
+    print("\n Preprocessing image...")
 
     gray = convert_to_grayscale(product_image)
     blurred = apply_gaussian_blur(gray)
@@ -50,13 +50,13 @@ def main():
     cv2.imwrite(blurred_image, blurred)
 
     # STEP 3 — Segmentation
-    print("✂️ Segmenting product...")
+    print("\n Segmenting product...")
 
     grayscale_to_binary(blurred_image, binary_image)
     clean_binary_image(binary_image, cleaned_binary)
 
     # STEP 4 — Contour Detection
-    print("📦 Detecting product contour...")
+    print("\n Detecting product contour...")
 
     x, y, w, h = detect_largest_contour(
         cleaned_binary,
@@ -64,11 +64,11 @@ def main():
         contour_output
     )
 
-    print(f"Detected Width (pixels): {w}")
+    print(f"\nDetected Width (pixels): {w}")
     print(f"Detected Height (pixels): {h}")
 
     # STEP 5 — Calibration
-    print("\n📏 Performing calibration...")
+    print("\n Performing calibration...")
 
     REFERENCE_SIZE_CM = 5.0   # change if using different reference object
 
@@ -78,7 +78,7 @@ def main():
     )
 
     # STEP 6 — Measurement
-    print("\n📐 Measuring product dimensions...")
+    print("\n Measuring product dimensions...")
 
     width_cm, height_cm = measure_dimensions(
         w,
@@ -87,12 +87,12 @@ def main():
     )
 
     # STEP 7 — Comparison
-    print("\n📊 Comparing with standard dimensions...\n")
+    print("\n Comparing with standard dimensions...\n")
 
     compare_dimensions(width_cm, height_cm)
 
-    print("\n✅ PROCESS COMPLETED SUCCESSFULLY!")
-    print(f"📁 Check output images in: {output_dir}\n")
+    print("\n PROCESS COMPLETED SUCCESSFULLY!")
+    print(f" Check output images in: {output_dir}\n")
 
 
 if __name__ == "__main__":

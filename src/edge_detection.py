@@ -36,4 +36,4 @@ if __name__ == "__main__":
 
     detect_edges(input_image, output_image)
 
-    print(f"✅ Edge image saved at: {output_image}")
+    print(f" Edge image saved at: {output_image}")

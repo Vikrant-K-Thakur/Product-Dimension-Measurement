@@ -28,7 +28,7 @@ def capture_image():
     
     # Fallback to PC camera
     if cap is None:
-        print("📱 DroidCam not found, using PC camera...")
+        print(" DroidCam not found, using PC camera...")
         cap = cv2.VideoCapture(0)
         camera_type = "PC Camera"
         
@@ -36,7 +36,7 @@ def capture_image():
             print("❌ No camera available!")
             return False
     
-    print(f"✅ {camera_type} connected!")
+    print(f" {camera_type} connected!")
     print("\nControls:")
     print("• Press 'C' to capture image")
     print("• Press 'Q' to quit")
@@ -44,7 +44,7 @@ def capture_image():
     while True:
         ret, frame = cap.read()
         if not ret:
-            print("❌ Camera disconnected")
+            print(" Camera disconnected")
             break
         
         # Rotate frame if using DroidCam (portrait mode)
@@ -73,17 +73,17 @@ def capture_image():
             print(f"Key pressed: {key} ('{chr(key) if 32 <= key <= 126 else 'special'}')") 
         
         if key == ord('q') or key == ord('Q'):
-            print("⏹️ Exited without saving")
+            print(" Exited without saving")
             break
         elif key == ord('c') or key == ord('C'):
             filename = "product.jpg"
             filepath = os.path.join(input_dir, filename)
             success = cv2.imwrite(filepath, frame)
             if success:
-                print(f"📸 Image saved to: {filepath}")
+                print(f" Image saved to: {filepath}")
                 break
             else:
-                print("❌ Failed to save image!")
+                print(" Failed to save image!")
     
     cap.release()
     cv2.destroyAllWindows()

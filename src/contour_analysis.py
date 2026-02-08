@@ -65,7 +65,7 @@ if __name__ == "__main__":
         output_image
     )
 
-    print("✅ Bounding box detected")
+    print(" Bounding box detected")
     print(f"Width (pixels) : {w}")
     print(f"Height (pixels): {h}")
     print(f"Saved at: {output_image}")

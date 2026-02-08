@@ -27,4 +27,4 @@ if __name__ == "__main__":
     blurred = apply_gaussian_blur(gray)
 
     cv2.imwrite(output_path, blurred)
-    print(f"✅ Blurred grayscale image saved at: {output_path}")
+    print(f" Blurred grayscale image saved at: {output_path}")

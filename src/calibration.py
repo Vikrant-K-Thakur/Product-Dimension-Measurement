@@ -32,7 +32,7 @@ def calibrate(binary_image_path, reference_size_cm):
 
     pixels_per_cm = reference_pixels / reference_size_cm
 
-    print("🔧 CALIBRATION RESULTS")
+    print(" CALIBRATION RESULTS")
     print(f"Reference size (cm)   : {reference_size_cm}")
     print(f"Reference size (pixel): {reference_pixels}")
     print(f"Pixels per cm         : {pixels_per_cm:.2f}")

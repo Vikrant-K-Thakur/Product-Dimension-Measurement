@@ -5,7 +5,7 @@ def measure_dimensions(width_pixels, height_pixels, pixels_per_cm):
     width_cm = width_pixels / pixels_per_cm
     height_cm = height_pixels / pixels_per_cm
 
-    print("📐 MEASUREMENT RESULTS")
+    print(" MEASUREMENT RESULTS")
     print(f"Width  (pixels): {width_pixels}")
     print(f"Height (pixels): {height_pixels}")
     print(f"Width  (cm)    : {width_cm:.2f}")
