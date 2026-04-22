@@ -38,8 +38,15 @@ ENV/
 .DS_Store
 Thumbs.db
 
-# Project specific
+# Project specific - captured images
 data/input/*.jpg
 data/input/*.png
-data/output/
+data/output/*.jpg
+data/output/*.png
+
+# YOLOv8 model (large file, download separately)
+yolov8n.pt
+*.pt
+
+# Logs
 *.log
