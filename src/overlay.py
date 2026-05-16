@@ -1,26 +1,20 @@
 import cv2
 import math
-import numpy as np
 
 
-def draw_overlay(frame, contour, shape, width_cm, height_cm, label, accepted):
+def draw_overlay(frame, bbox, shape, width_cm, height_cm, label, accepted):
     color = (0, 255, 0) if accepted else (0, 0, 255)
+    x, y, w, h = bbox
+
+    cv2.rectangle(frame, (x, y), (x + w, y + h), color, 2)
 
     if shape == "Circle":
-        (cx, cy), radius = cv2.minEnclosingCircle(contour)
-        cv2.circle(frame, (int(cx), int(cy)), int(radius), color, 2)
         area = math.pi * (width_cm / 2) ** 2
-        text_x = int(cx) - 60
-        text_y = max(int(cy) - int(radius) - 10, 120)
     else:
-        rect = cv2.minAreaRect(contour)
-        box = cv2.boxPoints(rect)
-        box = np.intp(box)
-        cv2.drawContours(frame, [box], 0, color, 2)
         area = width_cm * height_cm
-        x, y, w, h = cv2.boundingRect(contour)
-        text_x = x
-        text_y = max(y - 10, 120)
+
+    text_x = x
+    text_y = max(y - 10, 120)
 
     status = "ACCEPTED" if accepted else "REJECTED"
 
