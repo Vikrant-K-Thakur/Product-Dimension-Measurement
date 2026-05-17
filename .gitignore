@@ -45,6 +45,9 @@ data/input/*.png
 data/output/*.jpg
 data/output/*.png
 
+# Saved dimensions (user specific)
+data/saved_dimensions.json
+
 # YOLOv8 model (large file, download separately)
 yolov8n.pt
 *.pt

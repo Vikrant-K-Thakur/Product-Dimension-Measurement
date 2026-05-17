@@ -13,13 +13,13 @@ def get_camera():
         if cap.isOpened():
             ret, _ = cap.read()
             if ret:
-                print("✅ DroidCam connected!")
+                print(" DroidCam connected!")
                 return cap, "DroidCam"
         cap.release()
 
-    print("📷 Using laptop camera...")
+    print(" Using laptop camera...")
     cap = cv2.VideoCapture(0)
     if not cap.isOpened():
         raise RuntimeError("❌ No camera available!")
-    print("✅ Laptop camera connected!")
+    print(" Laptop camera connected!")
     return cap, "Laptop"

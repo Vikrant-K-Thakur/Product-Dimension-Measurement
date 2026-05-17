@@ -2,9 +2,9 @@ from ultralytics import YOLO
 
 
 def load_model():
-    print("🤖 Loading YOLOv8...")
+    print(" Loading YOLOv8...")
     model = YOLO("yolov8s.pt")  # small model, better accuracy than nano
-    print("✅ YOLOv8 ready!")
+    print(" YOLOv8 ready!")
     return model
 
 
