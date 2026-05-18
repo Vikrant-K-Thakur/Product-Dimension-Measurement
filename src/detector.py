@@ -3,7 +3,7 @@ from ultralytics import YOLO
 
 def load_model():
     print(" Loading YOLOv8...")
-    model = YOLO("yolov8s.pt")  # small model, better accuracy than nano
+    model = YOLO("yolov8s.pt") 
     print(" YOLOv8 ready!")
     return model
 
@@ -12,7 +12,7 @@ def detect_object(model, frame):
     results = model(frame, verbose=False)
     if results and results[0].boxes:
         box = results[0].boxes[0]
-        if float(box.conf[0]) < 0.4:  # ignore low confidence
+        if float(box.conf[0]) < 0.4: 
             return "Unknown", None
         cls_id = int(box.cls[0])
         x1, y1, x2, y2 = map(int, box.xyxy[0])

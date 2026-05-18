@@ -5,7 +5,6 @@ env = dotenv_values(".env")
 
 
 def get_camera():
-    """Try DroidCam first, fallback to laptop camera"""
     droidcam_url = env.get("DROID_CAM_URL", "")
     if droidcam_url:
         print("🔍 Trying DroidCam...")
@@ -20,6 +19,6 @@ def get_camera():
     print(" Using laptop camera...")
     cap = cv2.VideoCapture(0)
     if not cap.isOpened():
-        raise RuntimeError("❌ No camera available!")
+        raise RuntimeError(" No camera available!")
     print(" Laptop camera connected!")
     return cap, "Laptop"

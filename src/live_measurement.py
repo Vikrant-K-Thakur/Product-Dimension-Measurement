@@ -10,15 +10,10 @@ from src.dimension_store import save_dimension, compare_dimension, load_dimensio
 
 env = dotenv_values(".env")
 
-# ─────────────────────────────────────────────
-# CALIBRATION CONSTANT
-# IMPORTANT: Calibrate this value before running
-# pixels_per_cm = pixels_of_reference / actual_cm
-PIXELS_PER_CM = 40.0  # ← Adjust this after calibration
+PIXELS_PER_CM = 40.0  
 
 if PIXELS_PER_CM <= 0:
     raise ValueError("Invalid calibration value: PIXELS_PER_CM must be > 0")
-# ─────────────────────────────────────────────
 
 
 def show_menu():
@@ -42,10 +37,6 @@ def show_menu():
 
 
 def get_stable_measurement(cap, camera_type, model, samples=20):
-    """
-    Collect multiple readings and return the median
-    for accurate stable measurement before saving
-    """
     width_readings  = []
     height_readings = []
     label_readings  = []
@@ -65,7 +56,6 @@ def get_stable_measurement(cap, camera_type, model, samples=20):
 
         frame_count += 1
 
-        # Run YOLO every 5 frames during sampling
         if frame_count % 5 == 0:
             yolo_label, yolo_bbox = detect_object(model, frame)
 
@@ -83,21 +73,18 @@ def get_stable_measurement(cap, camera_type, model, samples=20):
     if not width_readings:
         return None, None, None
 
-    # Use median for accuracy — removes outliers
     width_readings.sort()
     height_readings.sort()
     mid = len(width_readings) // 2
     stable_width  = width_readings[mid]
     stable_height = height_readings[mid]
 
-    # Most common label
     stable_label = max(set(label_readings), key=label_readings.count)
 
     return stable_label, stable_width, stable_height
 
 
 def run_save_mode(cap, camera_type, model):
-    """Option 1 — Measure and save object dimensions"""
     print("\n  MODE: SAVE DIMENSIONS")
     print("  • Show object in front of camera")
     print("  • Press S to capture stable measurement and save")
@@ -106,7 +93,7 @@ def run_save_mode(cap, camera_type, model):
     frame_count = 0
     yolo_label  = "Unknown"
     yolo_bbox   = None
-    prev_width  = None  # None so EMA starts from first real reading
+    prev_width  = None  
     prev_height = None
     width_cm    = 0
     height_cm   = 0
@@ -123,7 +110,6 @@ def run_save_mode(cap, camera_type, model):
         display = frame.copy()
         frame_count += 1
 
-        # YOLO every 10 frames
         if frame_count % 10 == 0:
             yolo_label, yolo_bbox = detect_object(model, frame)
 
@@ -138,7 +124,6 @@ def run_save_mode(cap, camera_type, model):
             raw_width  = w / PIXELS_PER_CM
             raw_height = h / PIXELS_PER_CM
 
-            # EMA — start from first real reading, not from 0
             if prev_width is None:
                 prev_width  = raw_width
                 prev_height = raw_height
@@ -179,7 +164,6 @@ def run_save_mode(cap, camera_type, model):
             if yolo_label == "Unknown" or not yolo_bbox:
                 print("⚠️  No object detected. Show object clearly first.")
             else:
-                # Collect stable readings before saving
                 stable_label, stable_w, stable_h = get_stable_measurement(
                     cap, camera_type, model
                 )
@@ -192,7 +176,6 @@ def run_save_mode(cap, camera_type, model):
 
 
 def run_compare_mode(cap, camera_type, model):
-    """Option 2 — Compare object dimensions with saved data"""
     saved = load_dimensions()
 
     if not saved:
@@ -200,7 +183,7 @@ def run_compare_mode(cap, camera_type, model):
         print("   Please run Option 1 first to save dimensions.")
         return
 
-    print("\n📌 MODE: COMPARE DIMENSIONS")
+    print("\n  MODE: COMPARE DIMENSIONS")
     print(f"  • Saved objects: {', '.join(saved.keys())}")
     print("  • Show object → auto compares with saved data")
     print("  • Press Q to quit\n")
@@ -208,7 +191,7 @@ def run_compare_mode(cap, camera_type, model):
     frame_count  = 0
     yolo_label   = "Unknown"
     yolo_bbox    = None
-    prev_width   = None  # None so EMA starts from first real reading
+    prev_width   = None  
     prev_height  = None
     width_cm     = 0
     height_cm    = 0
@@ -227,13 +210,11 @@ def run_compare_mode(cap, camera_type, model):
         display = frame.copy()
         frame_count += 1
 
-        # YOLO every 10 frames
         if frame_count % 10 == 0:
             yolo_label, yolo_bbox = detect_object(model, frame)
 
         draw_info(display, camera_type, yolo_label)
 
-        # Mode label on screen
         cv2.putText(display, "MODE: COMPARE  |  Press Q to quit",
             (10, 85), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 200, 255), 2)
 
@@ -243,7 +224,6 @@ def run_compare_mode(cap, camera_type, model):
             raw_width  = w / PIXELS_PER_CM
             raw_height = h / PIXELS_PER_CM
 
-            # EMA — start from first real reading, not from 0
             if prev_width is None:
                 prev_width  = raw_width
                 prev_height = raw_height
@@ -255,17 +235,14 @@ def run_compare_mode(cap, camera_type, model):
 
             shape = "Rectangle" if abs(w - h) > 10 else "Square"
 
-            # Compare with saved dimensions
             accepted, info = compare_dimension(yolo_label, width_cm, height_cm)
 
             if accepted is None:
-                # No saved data for this object
                 draw_overlay(display, yolo_bbox, shape, width_cm, height_cm, yolo_label, False)
                 draw_warning(display, f"No saved data for '{yolo_label}' — run Option 1 first")
             else:
                 draw_overlay(display, yolo_bbox, shape, width_cm, height_cm, yolo_label, accepted)
 
-                # Print to terminal only when result changes
                 if yolo_label != last_label or accepted != last_accepted:
                     last_label   = yolo_label
                     last_accepted = accepted

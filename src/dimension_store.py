@@ -5,7 +5,6 @@ DIMENSIONS_FILE = "data/saved_dimensions.json"
 
 
 def load_dimensions():
-    """Load all saved dimensions from file"""
     if not os.path.exists(DIMENSIONS_FILE):
         return {}
     with open(DIMENSIONS_FILE, "r") as f:
@@ -13,7 +12,6 @@ def load_dimensions():
 
 
 def save_dimension(label, width_cm, height_cm, tolerance=0.5):
-    """Save or update dimension for a given object label"""
     os.makedirs(os.path.dirname(DIMENSIONS_FILE), exist_ok=True)
     data = load_dimensions()
 
@@ -35,7 +33,6 @@ def save_dimension(label, width_cm, height_cm, tolerance=0.5):
 
 
 def compare_dimension(label, width_cm, height_cm):
-    """Compare measured dimensions with saved dimensions"""
     data = load_dimensions()
     std = data.get(label.lower())
 
